@@ -102,7 +102,10 @@ def read_fastq(fastq_file: Path) -> Iterator[str]:
     :param fastq_file: (Path) Path to the fastq file.
     :return: A generator object that iterate the read sequences.
     """
-    pass
+    with open(fastq_file, "r") as fq:
+            for line in fq:
+                if line.startswith("@"):
+                    yield next(fq).strip() # Yield the sequence
 
 
 def cut_kmer(read: str, kmer_size: int) -> Iterator[str]:
@@ -111,8 +114,8 @@ def cut_kmer(read: str, kmer_size: int) -> Iterator[str]:
     :param read: (str) Sequence of a read.
     :return: A generator object that provides the kmers (str) of size kmer_size.
     """
-    pass
-
+    for i in range(len(read) - kmer_size + 1):
+        yield read[i:i+kmer_size]
 
 def build_kmer_dict(fastq_file: Path, kmer_size: int) -> Dict[str, int]:
     """Build a dictionnary object of all kmer occurrences in the fastq file
@@ -120,7 +123,16 @@ def build_kmer_dict(fastq_file: Path, kmer_size: int) -> Dict[str, int]:
     :param fastq_file: (str) Path to the fastq file.
     :return: A dictionnary object that identify all kmer occurrences.
     """
-    pass
+    kmer_occurence = {}
+    
+    for read in read_fastq(fastq_file):
+        for kmer in cut_kmer(read, kmer_size):
+            if kmer in kmer_occurence.keys():
+                kmer_occurence[kmer] += 1
+            else:
+                kmer_occurence[kmer] = 1
+    
+    return kmer_occurence
 
 
 def build_graph(kmer_dict: Dict[str, int]) -> DiGraph:
@@ -129,7 +141,15 @@ def build_graph(kmer_dict: Dict[str, int]) -> DiGraph:
     :param kmer_dict: A dictionnary object that identify all kmer occurrences.
     :return: A directed graph (nx) of all kmer substring and weight (occurrence).
     """
-    pass
+    graph = DiGraph()
+
+    for kmer, weight in kmer_dict.items():
+        prefix = kmer[:-1]
+        sufix = kmer[1:]
+
+        graph.
+
+    return graph
 
 
 def remove_paths(
