@@ -6,11 +6,17 @@ This work is part of an academic course gave by the Dr. Ghozlane of the Pasteur 
 ## Dependencies
 
 ```
-pip3 install --user networkx pytest pylint pytest-cov
+pip install networkx pytest pylint pytest-cov
 ```
 
 ## Basic Usage
 
 ```
-python debruijn.py -i FASTA_FILE -k KMER -o OUTPUT_FILE
+usage:
+    python debruijn.py -i=FILE -k=INT -o=FILE
+
+option:
+    -i File with reads, FASTA format
+    -k Size of the kmer
+    -o Output file with contigs, FASTA format
 ```
